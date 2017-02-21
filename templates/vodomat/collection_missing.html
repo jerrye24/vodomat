@@ -1,0 +1,26 @@
+{% extends 'vodomat/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Отсутствуют инкассации{% endblock %}
+
+{% block content %}
+
+    <h3>Отсутствуют инкассации 3-е суток</h3>
+    <table class="table table-striped tablesorter">
+    <thead>
+        <tr class="info">
+            <th>Номер</th>
+            <th>Адрес автомата</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for avtomat in collection_missing_avtomats %}
+            <tr>
+                <td>{{ avtomat.number }}</td>
+                <td>{{ avtomat.address }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

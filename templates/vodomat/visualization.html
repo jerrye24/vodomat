@@ -1,0 +1,21 @@
+{% extends 'vodomat/base.html' %}
+
+{% block title %}Визуализация{% endblock %}
+
+{% block content %}
+
+    <nav>
+        <ul class="pager">
+            <li class="previous"><a id="previous" href="{% url 'vodomat:visualization' prev_year prev_month avtomat.id %}"><span>&larr;</span> Предыдущий месяц</a></li>
+            <li class="next"><a id="next" href="{% url 'vodomat:visualization' next_year next_month avtomat.id %}">Следующий месяц <span>&rarr;</span></a></li>
+        </ul>
+    </nav>
+
+    <h3>Реализованный обьем воды(дм&#179): {{ avtomat }} ({{ date|date:'M-Y' }})</h3>
+    <div>
+    <embed type="image/svg+xml" src= {{ hist_water|safe }} ></embed>
+    </div>
+
+    <h4>Реализовано воды за месяц(дм&#179): {{ water_month }}</h4>
+
+{% endblock %}

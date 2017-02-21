@@ -1,0 +1,41 @@
+{% block menu %}
+
+    <li><a href="{% url 'vodomat:status' %}">
+	<span class='glyphicon glyphicon-home'></span>  Статус автоматов
+	</a>
+    </li>
+    <li><a href="#collections" data-toggle="collapse" class="collapsed">
+    	<span class='glyphicon glyphicon-usd'></span>  Инкассации<span class="pull-right glyphicon glyphicon-menu-left"></span>
+    	</a>
+        <ul class="nav collapse sidebar_list" id="collections">
+            <li><a href="{% url 'vodomat:collection' current_year current_month current_day %}">Инкассации за сутки</a></li>
+            <li><a href="{% url 'vodomat:collection_period_form' %}">Инкассации за период</a></li>
+            <li><a href="{% url 'vodomat:collection_route' current_year current_month current_day %}">Инкассации по маршрутам</a></li>
+            <li><a href="{% url 'vodomat:collection_missing' %}">Отсутствуют инкассации</a></li>
+        </ul>
+    </li>
+    <li><a href="#statistic" data-toggle="collapse" class="collapsed">
+	<span class='glyphicon glyphicon-calendar'></span>  Статистика<span class="pull-right glyphicon glyphicon-menu-left"></span>
+	</a>
+        <ul class="nav collapse sidebar_list" id="statistic">
+            <li><a href="{% url 'vodomat:statistic_form' %}">Статистика за сутки</a></li>
+            <li><a href="{% url 'vodomat:statistic_period_form' %}">Статистика за период</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'vodomat:route' %}">
+	<span class='glyphicon glyphicon-road'></span>  Маршруты
+	</a>
+    </li>
+    <li><a href="{% url 'vodomat:map' %}">
+	<span class='glyphicon glyphicon-globe'></span>  Карта автоматов
+	</a>
+    </li>
+    <li><a href="{% url 'vodomat:avtomat' %}">
+	<span class='glyphicon glyphicon-list-alt'></span>  Список автоматов
+	</a>
+    </li>
+    {% if user.is_staff %}
+        <li><a href="{% url 'admin:index' %}"><span class='glyphicon glyphicon-dashboard'></span>  Администрирование</a></li>
+    {% endif %}
+
+{% endblock %}

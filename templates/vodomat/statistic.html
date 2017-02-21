@@ -1,0 +1,53 @@
+{% extends 'vodomat/base.html' %}
+{% load vodomat_extras %}
+
+{% block title %}Статистика по автомату{% endblock %}
+
+{% block content %}
+
+    <nav>
+        <ul class="pager">
+            <li class="previous"><a id="previous" href="{% url 'vodomat:statistic' previous_day.year previous_day.month previous_day.day avtomat.id %}"><span>&larr;</span> Предыдущий день</a></li>
+            <li class="next"><a id="next" href="{% url 'vodomat:statistic' next_day.year next_day.month next_day.day avtomat.id %}">Следующий день <span>&rarr;</span></a></li>
+        </ul>
+    </nav>
+
+    <h3>Статистика по автомату: {{ avtomat }} за {{ day|date:'d N' }}</h3>
+    <table class="table table-striped tablesorter">
+    <thead>
+        <tr class="info">
+            <th>Время</th>
+            <th>Остаток воды</th>
+            <th>Принятая сумма</th>
+            <th>Грн</th>
+            <th>Коп</th>
+            <th>Цена</th>
+            <th>Наличие воды</th>
+            <th>Эл-сеть</th>
+            <th>Купюроприемник</th>
+            <th>Счетчик воды</th>
+            <th>Регистратор</th>
+            <th>Событие</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for avtomat in statistic_table %}
+            <tr>
+                <td>{{ avtomat.time }}</td>
+                <td>{{ avtomat.water_balance }}</td>
+                <td>{{ avtomat.how_money }}</td>
+                <td>{{ avtomat.grn }}</td>
+                <td>{{ avtomat.kop }}</td>
+                <td>{{ avtomat.water_price }}</td>
+                <td>{% if avtomat.ev_water %}Сбой{% else %}Норма{% endif %}</td>
+                <td>{% if avtomat.ev_volt %}Сбой{% else %}Норма{% endif %}</td>
+                <td>{% if avtomat.ev_bill %}Сбой{% else %}Норма{% endif %}</td>
+                <td>{% if avtomat.ev_counter_water %}Сбой{% else %}Норма{% endif %}</td>
+                <td>{% if avtomat.ev_register %}Сбой{% else %}Норма{% endif %}</td>
+                <td>{{ avtomat.event|event }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

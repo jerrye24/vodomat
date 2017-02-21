@@ -1,0 +1,31 @@
+{% extends 'vodomat/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Инкассации{% endblock %}
+
+{% block content %}
+
+    <h3>Инкассации по автомату: {{ avtomat }} с {{ start|date:'j b Y' }} до {{ end|date:'j b Y' }}</h3>
+
+    <table class="table table-striped tablesorter">
+    <thead>
+        <tr class="info">
+            <th>Время</th>
+            <th>Номер</th>
+            <th>Адрес автомата</th>
+            <th>Сумма {{ end }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for avtomat in collection_period %}
+            <tr>
+                <td>{{ avtomat.time|date:'j N H:i' }}</td>
+                <td>{{ avtomat.avtomat.number }}</td>
+                <td>{{ avtomat.avtomat }}</td>
+                <td>{{ avtomat.how_money }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

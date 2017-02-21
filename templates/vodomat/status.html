@@ -1,0 +1,62 @@
+{% extends 'vodomat/base.html' %}
+{% load vodomat_extras %}
+
+{% block title %}Статус автоматов{% endblock %}
+
+{% block content %}
+
+    {% block alphabet %}
+        {% include 'vodomat/alphabet.html' %}
+    {% endblock %}
+
+    <h3>Статус автоматов {% now 'DATE_FORMAT' %}</h3>
+    <table class="table tablesorter">
+    <thead>
+        <tr class="info">
+            <th>Номер</th>
+            <th>Адрес</th>
+            <th>Время</th>
+            <th>Остаток</th>
+            <th>Сумма</th>
+            <th>Грн</th>
+            <th>Коп</th>
+            <th>Цена</th>
+            <th>Вода</th>
+            <th>Сеть</th>
+            <th>Сч-к</th>
+            <th>Ре-р</th>
+            <th>Куп1</th>
+            <th>Куп2</th>
+            <th>Мон1</th>
+            <th>Блок</th>
+            <th>Конк</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for avtomat in status_table %}
+        <tr onclick="document.location='{% url 'vodomat:detail_avtomat' avtomat.avtomat.id %}'" onmouseover="this.className='active'" onmouseout="this.className=''">
+           <td>{{ avtomat.avtomat.number }}</td>
+           <td {% if avtomat.ev_water == 1 or avtomat.ev_volt == 1 or avtomat.ev_bill == 1 or avtomat.ev_counter_water == 1 or avtomat.ev_register == 1 %} bgcolor='#faebd7' {% else %} bgcolor="#c4dce8" {% endif %}>
+               {{ avtomat.avtomat.address }}
+           </td>
+           <td>{{ avtomat.time|date:"d M H:i" }}</td>
+           <td>{{ avtomat.water_balance }}</td>
+           <td>{{ avtomat.how_money }}</td>
+           <td>{{ avtomat.grn }}</td>
+           <td>{{ avtomat.kop }}</td>
+           <td>{{ avtomat.water_price }}</td>
+           <td>{% if avtomat.ev_water %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+           <td>{% if avtomat.ev_volt %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+           <td>{% if avtomat.ev_counter_water %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+           <td>{% if avtomat.ev_register %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+           <td>{% if avtomat.ev_bill %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+           <td>{{ avtomat.ev_bill_time }}</td>
+           <td>{{ avtomat.ev_coin_time }}</td>
+           <td>{{ avtomat.time_to_block }}</td>
+           <td>{% if avtomat.avtomat.competitors %}<span class="text-success">Есть</span>{% else %}Нет{% endif %}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

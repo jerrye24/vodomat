@@ -1,0 +1,44 @@
+{% extends 'vodomat/base.html' %}
+{% load vodomat_extras %}
+
+{% block title %}Список автоматов{% endblock %}
+
+{% block content %}
+
+    <h3>Список автоматов</h3>
+    <table class="table tablesorter">
+    <thead>
+        <tr class="info">
+            <th></th>
+            <th>Номер</th>
+            <th>Город</th>
+            <th>Адрес</th>
+            <th>Маршрут</th>
+            <th>Цена</th>
+            <th>Обьем</th>
+            <th>Телефон</th>
+            <th>Регистратор</th>
+            <th>Охрана</th>
+            <th>Конкуренты</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for avtomat in avtomat_table %}
+        <tr>
+            <td><a href="{% url 'vodomat:edit_avtomat' avtomat.pk %}">Ред</a></td>
+            <td>{{ avtomat.number }}</td>
+            <td>{{ avtomat.city }}</td>
+            <td>{{ avtomat.address }}</td>
+            <td>{% if avtomat.route %}{{ avtomat.route }}{% else %}-{% endif %}</td>
+            <td>{% if avtomat.water_price %}{{ avtomat.water_price }}{% else %}-{% endif %}</td>
+            <td>{% if avtomat.size %}{{ avtomat.size }}{% else %}-{% endif %}</td>
+            <td>{% if avtomat.phone %}{{ avtomat.phone }}{% else %}-{% endif %}</td>
+            <td>{% if avtomat.register %}{{ avtomat.register }}{% else %}-{% endif %}</td>
+            <td>{% if avtomat.security %}{{ avtomat.security }}{% else %}-{% endif %}</td>
+            <td>{% if avtomat.competitors %}Есть{% else %}Нет{% endif %}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}
