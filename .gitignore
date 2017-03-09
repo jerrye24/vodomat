@@ -1,11 +1,7 @@
 *.pyc
 manage.py
 /vodomat_project/
-/extra/
 /static/admin/
 /static/debug_toolbar/
-/static/extra/
-/templates/extra/
-/templates/admin/
 /vodomat/.ropeproject/
 /vodomat/migrations/

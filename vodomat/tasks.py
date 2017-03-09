@@ -62,14 +62,14 @@ def data_to_table():
         line.save()
 
 
-@periodic_task(name='delete_old_statistic_collections', ignor_result=True, run_every=crontab(0, 2, day_of_month='1'))
+@periodic_task(name='delete_old_statistic_collection', ignor_result=True, run_every=crontab(0, 2, day_of_month='1'))
 def delete_old_statistic_collections():
-    delete_month = datetime.date.today - relativdelta(months=-2)
+    delete_month = datetime.date.today - relativedelta(months=-2)
     Statistic.objects.filter(time__lt=delete_month).delete()
     Collection.objects.filter(time__lt=delete_month).delete()
 
 
 @periodic_task(name='delete_old_datafromavtomat', ignor_result=True, run_every=crontab(minute=0, hour=3))
 def delete_old_datafromavtomat():
-    delete_week = datetime.date.today() - relativdelta(weeks=-1)
+    delete_week = datetime.date.today() - relativedelta(weeks=-2)
     DataFromAvtomat.objects.filter(time__lt=delete_week).delete()

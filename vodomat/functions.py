@@ -20,10 +20,10 @@ def parsing_line38(string, time):
         data['time_to_block'] = 99
         return data
     except Exception as err_38:
-        file_38 = open('/tmp/error_38.txt', 'a')
-        error_38 = time.strftime('%c') + ' AVTOMAT: %s - ' % number + str(err_38) + '\n'
-        file_38.write(error_38)
-        file_38.close()
+#        file_38 = open('/tmp/error_38.txt', 'a')
+#        error_38 = time.strftime('%c') + ' AVTOMAT: %s - ' % number + str(err_38) + '\n'
+#        file_38.write(error_38)
+#        file_38.close()
         return 'error'
 
 
@@ -46,19 +46,8 @@ def parsing_line48(string, time):
         data['time_to_block'] = int(string[30:32])
         return data
     except Exception as err_48:
-        file_48 = open('/tmp/error_48.txt', 'w')
-        error_48 = time.strftime('%c') + ' AVTOMAT: %s - ' % number + str(err_48) + '\n'
-        file_48.write(error_48)
-        file_48.close()
+#        file_48 = open('/tmp/error_48.txt', 'a')
+#        error_48 = time.strftime('%c') + ' AVTOMAT: %s - ' % number + str(err_48) + '\n'
+#        file_48.write(error_48)
+#        file_48.close()
         return 'error'
-
-
-def last_date():
-    year = datetime.date.today().year
-    month = datetime.date.today().month - 1
-    if datetime.date.today().month == 1:
-        year -= 1
-        month = 12
-    last = datetime.datetime(year, month, 1)
-    last_7 = datetime.date.today() - datetime.timedelta(days=7)
-    return last, last_7
