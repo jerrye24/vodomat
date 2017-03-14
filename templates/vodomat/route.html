@@ -23,7 +23,7 @@
            <td>{{ route.car_number }}</td>
            <td>{{ route.driver }}</td>
            <td><a href="{% url 'vodomat:edit_route' route.id %}">Редактировать</a> </td>
-           <td><a data-toggle="modal" data-target="#deleteRoute" data-car_number="{{ route.car_number }}" data-route_id="{{ route.id }}" class="text-danger">Удалить</a></td>
+           <td><a data-toggle="modal" data-target="#deleteRoute" data-car_number="{{ route.car_number }}" data-delete_href="{% url 'vodomat:delete_route' route.id %}" class="text-danger">Удалить</a></td>
        </tr>
     {% endfor %}
     </tbody>
