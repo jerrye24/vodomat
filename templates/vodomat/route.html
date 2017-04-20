@@ -1,11 +1,18 @@
 {% extends 'vodomat/base.html' %}
 {% load bootstrap3 %}
 
-{% block title %}Маршруты{% endblock %}
+{% block title %}Список маршрутов{% endblock %}
 
 {% block content %}
 
-    <h3>Маршруты</h3>
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'avtomat' %}">Автоматы</a></li>
+        <li role="presentation" class="active"><a href="{% url 'route' %}">Маршруты</a></li>
+        <li role="presentation"><a href="{% url 'street' %}">Улицы</a></li>
+        <li role="presentation"><a href="{% url 'city' %}">Города</a></li>
+    </ul>
+
+    <h3>Маршруты <a href="{% url 'create_route' %}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Добавить маршрут</a></h3>
     <table class="table">
     <thead>
         <tr class="info">
@@ -19,21 +26,15 @@
     <tbody>
     {% for route in route_table %}
        <tr>
-           <td style="width: 40%" onclick="document.location='{% url 'vodomat:route_sorted' route.route_number %}'" onmouseover="this.className='active'" onmouseout="this.className=''">{{ route.route_number }}</td>
+           <td>{{ route }}</td>
            <td>{{ route.car_number }}</td>
            <td>{{ route.driver }}</td>
-           <td><a href="{% url 'vodomat:edit_route' route.id %}">Редактировать</a> </td>
-           <td><a data-toggle="modal" data-target="#deleteRoute" data-car_number="{{ route.car_number }}" data-delete_href="{% url 'vodomat:delete_route' route.id %}" class="text-danger">Удалить</a></td>
+           <td><a href="{% url 'edit_route' route.id %}">Редактировать</a> </td>
+           <td><a data-toggle="modal" data-target="#deleteRoute" data-car_number="{{ route.car_number }}" data-delete_href="{% url 'delete_route' route.id %}" class="text-danger">Удалить</a></td>
        </tr>
     {% endfor %}
     </tbody>
     </table>
-
-    <p>
-    {% buttons %}
-        <a href="{% url 'vodomat:create_route' %}" class="btn btn-primary">Создать маршрут</a>
-    {% endbuttons %}
-    </p>
 
     <div class="modal fade" id="deleteRoute" tabindex="-1">
         <div class="modal-dialog">
@@ -52,6 +53,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}

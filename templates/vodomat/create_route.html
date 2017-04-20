@@ -1,9 +1,11 @@
 {% extends 'vodomat/base.html' %}
 {% load bootstrap3 %}
 
-{% block title %}Создать маршрут{% endblock %}
+{% block title %}Добавить маршрут{% endblock %}
 
 {% block content %}
+
+    <a href="{% url 'route' %}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span>  Назад</a>
 
     <div class="row">
         <div class="col-md-offset-4 col-md-4">

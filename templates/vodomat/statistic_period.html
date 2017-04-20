@@ -6,6 +6,11 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'statistic_form' %}">Сутки</a></li>
+        <li role="presentation" class="active"><a href="{% url 'statistic_period_form' %}">Период</a></li>
+    </ul>
+
     <h3>Статистика по автомату: {{ avtomat }} с {{ start|date:'j b Y' }} до {{ end|date:'j b Y' }}</h3>
 
     <table class="table table-striped tablesorter">

@@ -1,11 +1,8 @@
-import datetime
-
-
-def parsing_line38(string, time):
-    number = int(string[:4])
+def parsing_line38(string):
     data = {}
     try:
-        data['number'] = number
+        data['number'] = int(string[:4])
+        data['time_in_message'] = string[4:16]
         data['how_money'] = float(string[16:22]) / 100
         data['water_balance'] = float(string[22:28]) / 100
         data['water_price'] = float(string[28:32]) / 100
@@ -19,19 +16,15 @@ def parsing_line38(string, time):
         data['kop'] = 0
         data['time_to_block'] = 99
         return data
-    except Exception as err_38:
-#        file_38 = open('/tmp/error_38.txt', 'a')
-#        error_38 = time.strftime('%c') + ' AVTOMAT: %s - ' % number + str(err_38) + '\n'
-#        file_38.write(error_38)
-#        file_38.close()
+    except:
         return 'error'
 
 
-def parsing_line48(string, time):
-    number = int(string[:4])
+def parsing_line48(string):
     data = {}
     try:
-        data['number'] = number
+        data['number'] = int(string[:4])
+        data['time_in_message'] = string[4:14]
         data['how_money'] = float(string[14:20]) / 100
         data['water_balance'] = float(string[20:26]) / 100
         data['water_price'] = float(string[26:30]) / 100
@@ -45,9 +38,5 @@ def parsing_line48(string, time):
         data['kop'] = int(string[36:40])
         data['time_to_block'] = int(string[30:32])
         return data
-    except Exception as err_48:
-#        file_48 = open('/tmp/error_48.txt', 'a')
-#        error_48 = time.strftime('%c') + ' AVTOMAT: %s - ' % number + str(err_48) + '\n'
-#        file_48.write(error_48)
-#        file_48.close()
+    except:
         return 'error'

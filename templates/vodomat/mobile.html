@@ -12,7 +12,7 @@
 <body>
 
     {% for avtomat in status_table_mobile %}
-        <div id="mobile_block" onclick="document.location='{% url 'vodomat:detail_mobile' avtomat.avtomat.number %}'"
+        <div id="mobile_block" onclick="document.location='{% url 'detail_mobile' avtomat.avtomat.number %}'"
                                 {% if avtomat.ev_water == 1 or avtomat.ev_volt == 1 or avtomat.ev_bill == 1 or avtomat.ev_counter_water == 1 or avtomat.ev_register == 1 %} style="background-color: #faebd7"
                                 {% else %} style="background-color: #79aec8"
                                 {% endif %}>

@@ -1,5 +1,5 @@
-#coding: utf8
-from vodomat.models import Avtomat, Status, Statistic, Collection, DataFromAvtomat, Route
+# coding: utf8
+from vodomat.models import Avtomat, Status, Statistic, Collection, DataFromAvtomat, Route, City, Street
 from vodomat.forms import *
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import md5
 import pygal
 from pygal.style import Style
@@ -24,18 +24,15 @@ def data_from_avtomat(request):
         line.save()
         number = data[:4]
         try:
-	    price = Avtomat.objects.get(number=number).water_price
+            price = Avtomat.objects.get(number=number).water_price
             return HttpResponse('Price={:0>4}'.format(price))
         except:
-            return HttpResponse()
+            return HttpResponse('Ok')
 
 
 @login_required
 def status_view(request):
-    status_table = Status.objects.all().select_related('avtomat').defer('avtomat__city', 'avtomat__route',
-                                                                        'avtomat__latitude', 'avtomat__longitude',
-                                                                        'avtomat__interval', 'avtomat__phone',
-                                                                        'avtomat__size')
+    status_table = Status.objects.all().select_related('avtomat')
     status_table_mobile = Status.objects.order_by('avtomat')
     browser = request.META['HTTP_USER_AGENT']
     if browser.find('Android') != -1:
@@ -45,17 +42,59 @@ def status_view(request):
 
 
 class AvtomatView(LoginRequiredMixin, ListView):
-    queryset = Avtomat.objects.all().select_related('route').defer('route__car_number', 'route__driver',
-                                                                   'latitude', 'longitude')
+    queryset = Avtomat.objects.all().select_related('route')
     template_name = 'vodomat/avtomat.html'
     context_object_name = 'avtomat_table'
 
+@login_required
+def street_json_view(request):
+    term = request.GET['term'].capitalize()
+    city = request.GET['city']
+    data = Street.objects.filter(city=city, street__startswith=term)
+    streets = []
+    for street in data:
+        street = {'value': street.id, 'label': street.street}
+        streets.append(street)
+    # streets = {street.id: street.street for street in data}
+    return JsonResponse(streets, safe=False)
 
-class EditAvtomatView(LoginRequiredMixin, UpdateView):
-    model = Avtomat
-    fields = ['address', 'city', 'route', 'water_price', 'size', 'phone', 'register', 'security', 'interval', 'competitors']
-    success_url = '/vodomat/avtomat/'
-    template_name = 'vodomat/edit_avtomat.html'
+
+# class EditAvtomatView(LoginRequiredMixin, UpdateView):
+#     model = Avtomat
+#     fields = ['street', 'house', 'route', 'water_price', 'size', 'phone', 'register', 'security', 'competitors']
+#     success_url = '/avtomat/'
+#     template_name = 'vodomat/edit_avtomat.html'
+
+
+@login_required
+def edit_avtomat_form_view(request, pk):
+    avtomat = Avtomat.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EditAvtomatForm(request.POST, instance=avtomat)
+        if form.is_valid():
+            data = form.cleaned_data
+            avtomat.street = data['street']
+            avtomat.house = data['house']
+            avtomat.route = data['route']
+            avtomat.price = data['water_price']
+            avtomat.size = data['size']
+            avtomat.phone = data['phone']
+            avtomat.register = data['register']
+            avtomat.security = data['security']
+            avtomat.competitors = data['competitors']
+            avtomat.save()
+            return redirect('avtomat')
+    else:
+        try:
+            city = avtomat.street.city
+        except AttributeError:
+            city = u''
+        try:
+            street_label = avtomat.street.street
+        except AttributeError:
+            street_label = u''
+        form = EditAvtomatForm(instance=avtomat, initial={'city': city, 'street_label': street_label})
+        return render(request, 'vodomat/edit_avtomat.html', {'form': form, 'avtomat': avtomat})
 
 
 @login_required
@@ -108,7 +147,7 @@ def collection_route_view(request, year, month, day):
 def collection_missing_view(request):
     period = datetime.date.today() - datetime.timedelta(days=3)
     collections_of_period = Collection.objects.filter(time__gte=period).values_list('avtomat', flat=True)
-    collection_missing_avtomats = Avtomat.objects.exclude(id__in=list(collections_of_period)).only('number', 'address')
+    collection_missing_avtomats = Avtomat.objects.exclude(id__in=list(collections_of_period))
     return render(request, 'vodomat/collection_missing.html', {'collection_missing_avtomats': collection_missing_avtomats})
 
 
@@ -124,7 +163,7 @@ def collection_period_form_view(request):
                 end = period[1]
             except IndexError:
                 end = start
-            return redirect('vodomat:collection_period', start=start, end=end, id=data['avtomat'].id)
+            return redirect('collection_period', start=start, end=end, id=data['avtomat'].id)
     else:
         form = PeriodForm()
     return render(request, 'vodomat/period_form.html', {'form': form})
@@ -157,9 +196,9 @@ def statistic_form_view(request):
         if form.is_valid():
             data = form.cleaned_data
             if data['visualization']:
-                return redirect('vodomat:visualization', year=today.year, month=today.month, id=data['avtomat'].id)
+                return redirect('visualization', year=today.year, month=today.month, id=data['avtomat'].id)
             else:
-                return redirect('vodomat:statistic', year=today.year, month=today.month, day=today.day,
+                return redirect('statistic', year=today.year, month=today.month, day=today.day,
                                 id=data['avtomat'].id)
     else:
         form = StatisticForm()
@@ -195,7 +234,7 @@ def statistic_period_form_view(request):
                 end = period[1]
             except ImportError:
                 end = start
-            return redirect('vodomat:statistic_period', start=start, end=end, id=data['avtomat'].id)
+            return redirect('statistic_period', start=start, end=end, id=data['avtomat'].id)
     else:
         form = PeriodForm()
     return render(request, 'vodomat/period_form.html', {'form': form})
@@ -216,7 +255,33 @@ class SearchView(LoginRequiredMixin, ListView):
     context_object_name = 'status_table'
 
     def get_queryset(self):
-        return Status.objects.filter(avtomat__address__istartswith=self.args[0]).select_related('avtomat')
+        return Status.objects.filter(avtomat__street__street__istartswith=self.args[0]).select_related('avtomat')
+
+
+class RouteView(LoginRequiredMixin, ListView):
+    model = Route
+    template_name = 'vodomat/route.html'
+    context_object_name = 'route_table'
+
+
+class RouteListView(LoginRequiredMixin, ListView):
+    model = Route
+    template_name = 'vodomat/route_list.html'
+    context_object_name = 'route_table'
+
+
+class CreateRouteView(LoginRequiredMixin, CreateView):
+    model = Route
+    fields = ['route_number', 'car_number', 'driver']
+    success_url = '/route/'
+    template_name = 'vodomat/create_route.html'
+
+
+class EditRouteView(LoginRequiredMixin, UpdateView):
+    model = Route
+    fields = ['route_number', 'car_number', 'driver']
+    success_url = '/route/'
+    template_name = 'vodomat/edit_route.html'
 
 
 class RouteSortedView(LoginRequiredMixin, ListView):
@@ -227,30 +292,10 @@ class RouteSortedView(LoginRequiredMixin, ListView):
         return Status.objects.filter(avtomat__route__route_number=self.kwargs['route']).select_related('avtomat')
 
 
-class RouteView(LoginRequiredMixin, ListView):
-    model = Route
-    template_name = 'vodomat/route.html'
-    context_object_name = 'route_table'
-
-
-class CreateRouteView(LoginRequiredMixin, CreateView):
-    model = Route
-    fields = ['route_number', 'car_number', 'driver']
-    success_url = '/vodomat/route/'
-    template_name = 'vodomat/create_route.html'
-
-
-class EditRouteView(LoginRequiredMixin, UpdateView):
-    model = Route
-    fields = ['car_number', 'driver']
-    success_url = '/vodomat/route/'
-    template_name = 'vodomat/edit_route.html'
-
-
 @login_required
 def delete_route_view(request, pk):
     Route.objects.get(id=pk).delete()
-    return redirect('vodomat:route')
+    return redirect('route')
 
 
 @login_required
@@ -297,10 +342,48 @@ def visualization_view(request, year, month, id):
 
 @login_required
 def map_view(request):
-    status = Status.objects.all().select_related('avtomat').defer('avtomat__city', 'avtomat__route',
-                                                                  'avtomat__interval', 'avtomat__phone',
-                                                                  'avtomat__size')
+    status = Status.objects.all().select_related('avtomat')
     return render(request, 'vodomat/map.html', {'status': status})
+
+
+class StreetView(LoginRequiredMixin, ListView):
+    model = Street
+    template_name = 'vodomat/street.html'
+    context_object_name = 'street_table'
+
+
+class CreateStreetView(LoginRequiredMixin, CreateView):
+    model = Street
+    fields = ['city', 'street']
+    success_url = '/street/'
+    template_name = 'vodomat/create_street.html'
+
+
+class EditStreetView(LoginRequiredMixin, UpdateView):
+    model = Street
+    fields = ['city', 'street']
+    success_url = '/street/'
+    template_name = 'vodomat/edit_street.html'
+
+
+class CityView(LoginRequiredMixin, ListView):
+    model = City
+    template_name = 'vodomat/city.html'
+    context_object_name = 'city_table'
+
+
+class CreateCityView(LoginRequiredMixin, CreateView):
+    model = City
+    fields = ['city', ]
+    success_url = '/city/'
+    template_name = 'vodomat/create_city.html'
+
+
+class EditCityView(LoginRequiredMixin, UpdateView):
+    model = City
+    fields = ['city', ]
+    success_url = '/city/'
+    template_name = 'vodomat/edit_city.html'
 
 
 @login_required

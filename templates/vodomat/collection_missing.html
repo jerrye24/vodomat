@@ -5,6 +5,13 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'collection' current_year current_month current_day %}">Сутки</a></li>
+        <li role="presentation"><a href="{% url 'collection_period_form' %}">Период</a></li>
+        <li role="presentation"><a href="{% url 'collection_route' current_year current_month current_day %}">Маршруты</a></li>
+        <li role="presentation" class="active"><a href="{% url 'collection_missing' %}">Отсутствуют</a></li>
+    </ul>
+
     <h3>Отсутствуют инкассации 3-е суток</h3>
     <table class="table table-striped tablesorter">
     <thead>
@@ -17,7 +24,7 @@
         {% for avtomat in collection_missing_avtomats %}
             <tr>
                 <td>{{ avtomat.number }}</td>
-                <td>{{ avtomat.address }}</td>
+                <td>{{ avtomat }}</td>
             </tr>
         {% endfor %}
     </tbody>

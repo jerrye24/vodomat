@@ -1,9 +1,26 @@
 {% extends 'vodomat/base.html' %}
+{% load staticfiles %}
 {% load bootstrap3 %}
 
 {% block title %}Выберите автомат и период{% endblock %}
 
 {% block content %}
+
+    {% if request.path == '/collection_period_form/' %}
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'collection' current_year current_month current_day %}">Сутки</a></li>
+        <li role="presentation" class="active"><a href="{% url 'collection_period_form' %}">Период</a></li>
+        <li role="presentation"><a href="{% url 'collection_route' current_year current_month current_day %}">Маршруты</a></li>
+        <li role="presentation"><a href="{% url 'collection_missing' %}">Отсутствуют</a></li>
+    </ul>
+    {% endif %}
+
+    {% if request.path == '/statistic_period_form/' %}
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'statistic_form' %}">Сутки</a></li>
+        <li role="presentation" class="active"><a href="{% url 'statistic_period_form' %}">Период</a></li>
+    </ul>
+    {% endif %}
 
     <div class="row">
         <div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
@@ -17,5 +34,7 @@
             </form>
         </div>
     </div>
+
+    <script src="{% static 'vodomat/js/datepicker.js' %}"></script>
 
 {% endblock %}

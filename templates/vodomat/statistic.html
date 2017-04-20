@@ -5,10 +5,15 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{% url 'statistic_form' %}">Сутки</a></li>
+        <li role="presentation"><a href="{% url 'statistic_period_form' %}">Период</a></li>
+    </ul>
+
     <nav>
         <ul class="pager">
-            <li class="previous"><a id="previous" href="{% url 'vodomat:statistic' previous_day.year previous_day.month previous_day.day avtomat.id %}"><span>&larr;</span> Предыдущий день</a></li>
-            <li class="next"><a id="next" href="{% url 'vodomat:statistic' next_day.year next_day.month next_day.day avtomat.id %}">Следующий день <span>&rarr;</span></a></li>
+            <li class="previous"><a id="previous" href="{% url 'statistic' previous_day.year previous_day.month previous_day.day avtomat.id %}"><span>&larr;</span> Предыдущий день</a></li>
+            <li class="next"><a id="next" href="{% url 'statistic' next_day.year next_day.month next_day.day avtomat.id %}">Следующий день <span>&rarr;</span></a></li>
         </ul>
     </nav>
 

@@ -5,10 +5,17 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{% url 'collection' current_year current_month current_day %}">Сутки</a></li>
+        <li role="presentation"><a href="{% url 'collection_period_form' %}">Период</a></li>
+        <li role="presentation"><a href="{% url 'collection_route' current_year current_month current_day %}">Маршруты</a></li>
+        <li role="presentation"><a href="{% url 'collection_missing' %}">Отсутствуют</a></li>
+    </ul>
+
     <nav>
         <ul class="pager">
-            <li class="previous"><a href="{% url 'vodomat:collection' previous_day.year previous_day.month previous_day.day %}"><span>&larr;</span> Предыдущий день</a></li>
-            <li class="next"><a href="{% url 'vodomat:collection' next_day.year next_day.month next_day.day %}">Следующий день <span>&rarr;</span></a></li>
+            <li class="previous"><a href="{% url 'collection' previous_day.year previous_day.month previous_day.day %}"><span>&larr;</span> Предыдущий день</a></li>
+            <li class="next"><a href="{% url 'collection' next_day.year next_day.month next_day.day %}">Следующий день <span>&rarr;</span></a></li>
         </ul>
     </nav>
 

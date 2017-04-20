@@ -34,10 +34,10 @@
     </thead>
     <tbody>
     {% for avtomat in status_table %}
-        <tr onclick="document.location='{% url 'vodomat:detail_avtomat' avtomat.avtomat.id %}'" onmouseover="this.className='active'" onmouseout="this.className=''">
+        <tr onclick="document.location='{% url 'detail_avtomat' avtomat.avtomat.id %}'" onmouseover="this.className='active'" onmouseout="this.className=''">
            <td>{{ avtomat.avtomat.number }}</td>
            <td {% if avtomat.ev_water == 1 or avtomat.ev_volt == 1 or avtomat.ev_bill == 1 or avtomat.ev_counter_water == 1 or avtomat.ev_register == 1 %} bgcolor='#faebd7' {% else %} bgcolor="#c4dce8" {% endif %}>
-               {{ avtomat.avtomat.address }}
+               {{ avtomat.avtomat }}
            </td>
            <td>{{ avtomat.time|date:"d M H:i" }}</td>
            <td>{{ avtomat.water_balance }}</td>

@@ -21,7 +21,7 @@
                 {% if avtomat.avtomat.latitude and avtomat.avtomat.longitude %}
                     var myPlacemark = new ymaps.Placemark([{{ avtomat.avtomat.latitude|unlocalize }}, {{ avtomat.avtomat.longitude|unlocalize }}],
                        {
-                        hintContent: '{{ avtomat.avtomat.address }}',
+                        hintContent: '{{ avtomat.avtomat }}',
                         balloonContent: 'Остаток воды<br>{{ avtomat.water_balance }}(л)'
                        },
                         {

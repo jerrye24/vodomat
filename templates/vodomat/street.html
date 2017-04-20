@@ -1,0 +1,54 @@
+{% extends 'vodomat/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Список улиц{% endblock %}
+
+{% block content %}
+
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'avtomat' %}">Автоматы</a></li>
+        <li role="presentation"><a href="{% url 'route' %}">Маршруты</a></li>
+        <li role="presentation" class="active"><a href="{% url 'street' %}">Улицы</a></li>
+        <li role="presentation"><a href="{% url 'city' %}">Города</a></li>
+    </ul>
+
+    <h3>Список улиц <a href="{% url 'create_street' %}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Добавить улицу</a></h3>
+
+    <table class="table">
+    <thead>
+        <tr class="info">
+            <th></th>
+            <th>Город</th>
+            <th>Улица</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for street in street_table %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ street.city }}</td>
+            <td>{{ street }}</td>
+            <td><a href="{% url 'edit_street' street.id %}">Редактировать</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}
+
+
+
+
+    <div class="row">
+        <div class="col-md-4 col-lg-4">
+            <form action="" method="post">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Добавить улицу">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary">Добавить</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>

@@ -6,8 +6,8 @@
 
     <nav>
         <ul class="pager">
-            <li class="previous"><a id="previous" href="{% url 'vodomat:visualization' prev_year prev_month avtomat.id %}"><span>&larr;</span> Предыдущий месяц</a></li>
-            <li class="next"><a id="next" href="{% url 'vodomat:visualization' next_year next_month avtomat.id %}">Следующий месяц <span>&rarr;</span></a></li>
+            <li class="previous"><a id="previous" href="{% url 'visualization' prev_year prev_month avtomat.id %}"><span>&larr;</span> Предыдущий месяц</a></li>
+            <li class="next"><a id="next" href="{% url 'visualization' next_year next_month avtomat.id %}">Следующий месяц <span>&rarr;</span></a></li>
         </ul>
     </nav>
 

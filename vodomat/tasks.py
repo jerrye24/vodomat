@@ -2,7 +2,7 @@
 from celery.task import periodic_task
 from celery.schedules import crontab
 from functions import parsing_line38, parsing_line48
-from vodomat.models import DataFromAvtomat, Avtomat, Status, Statistic, Collection
+from vodomat.models import DataFromAvtomat, Street, Avtomat, Status, Statistic, Collection
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -14,17 +14,17 @@ def data_to_table():
         string_from_avtomat = line.line
         time = line.time
         if len(string_from_avtomat) == 38:
-            data = parsing_line38(string_from_avtomat, time)
+            data = parsing_line38(string_from_avtomat)
             if data == 'error':
                 continue
         elif len(string_from_avtomat) == 48:
-            data = parsing_line48(string_from_avtomat, time)
+            data = parsing_line48(string_from_avtomat)
             if data == 'error':
                 continue
         try:
             avtomat = Avtomat.objects.get(number=data['number'])
         except Avtomat.DoesNotExist:
-            avtomat = Avtomat(number=data['number'], address=u'Новый автомат %s' % data['number'])
+            avtomat = Avtomat(number=data['number'])
             avtomat.save()
         try:
             status = Status.objects.get(avtomat=avtomat)
@@ -57,9 +57,10 @@ def data_to_table():
                   ev_volt=data['ev_volt'], ev_counter_water=data['ev_counter_water'], ev_register=data['ev_register'],
                   grn=data['grn'], kop=data['kop'], event=data['event']).save(force_insert=True)
         if data['event'] == 3:
-            Collection(avtomat=avtomat, how_money=data['how_money'], time=time).save(force_insert=True)
-        line.flag = True
-        line.save()
+            Collection(avtomat=avtomat, how_money=data['how_money'], time=time, time_in_message=data['time_in_message']).save(force_insert=True)
+        line.delete()
+        # line.flag = True
+        # line.save()
 
 
 @periodic_task(name='delete_old_statistic_collection', ignor_result=True, run_every=crontab(0, 2, day_of_month='1'))

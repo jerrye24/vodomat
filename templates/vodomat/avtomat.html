@@ -5,6 +5,13 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{% url 'avtomat' %}">Автоматы</a></li>
+        <li role="presentation"><a href="{% url 'route' %}">Маршруты</a></li>
+        <li role="presentation"><a href="{% url 'street' %}">Улицы</a></li>
+        <li role="presentation"><a href="{% url 'city' %}">Города</a></li>
+    </ul>
+
     <h3>Список автоматов</h3>
     <table class="table tablesorter">
     <thead>
@@ -25,10 +32,10 @@
     <tbody>
     {% for avtomat in avtomat_table %}
         <tr>
-            <td><a href="{% url 'vodomat:edit_avtomat' avtomat.pk %}">Ред</a></td>
+            <td><a href="{% url 'edit_avtomat' avtomat.pk %}">Ред</a></td>
             <td>{{ avtomat.number }}</td>
-            <td>{{ avtomat.city }}</td>
-            <td>{{ avtomat.address }}</td>
+            <td>{{ avtomat.street.city }}</td>
+            <td>{{ avtomat }}</td>
             <td>{% if avtomat.route %}{{ avtomat.route }}{% else %}-{% endif %}</td>
             <td>{% if avtomat.water_price %}{{ avtomat.water_price }}{% else %}-{% endif %}</td>
             <td>{% if avtomat.size %}{{ avtomat.size }}{% else %}-{% endif %}</td>
