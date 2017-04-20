@@ -1,12 +1,11 @@
 *.pyc
 db.sqlite3
 manage.py
-/vodomat_project/
+/vodomat_project/settings.py
 /static/admin/
 /static/debug_toolbar/
 /vodomat/.ropeproject/
 /vodomat/migrations/
 .idea/
 celerybeat-schedule
-requirements.txt
 temp.py
