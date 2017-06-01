@@ -2,7 +2,7 @@ $("#id_street_label").autocomplete({
     minLength: 2,
    source: function(request, response) {
        $.ajax({
-           url: "/avtomat/street_json/",
+           url: "/street_json/",
            dataType: "json",
            data: {term: request.term, city: $('#id_city').val()},
            success: function(data) {response(data)}

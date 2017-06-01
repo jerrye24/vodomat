@@ -8,5 +8,4 @@ manage.py
 /vodomat/migrations/
 .idea/
 celerybeat-schedule
-gunicorn.conf.py
 temp.py
