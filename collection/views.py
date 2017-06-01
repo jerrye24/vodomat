@@ -33,7 +33,7 @@ def collection_period_form_view(request):
             return redirect('collection_period', start=start, end=end, id=data['avtomat'].id)
     else:
         form = PeriodForm()
-    return render(request, 'collection/period_form.html', {'form': form})
+    return render(request, 'collection/collection_form.html', {'form': form})
 
 
 @login_required

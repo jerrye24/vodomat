@@ -6,7 +6,6 @@ from route.models import Route
 
 
 class City(models.Model):
-    id = models.IntegerField(primary_key=True)
     city = models.CharField(max_length=20, unique=True, verbose_name='Город')
 
     def __unicode__(self):
@@ -19,7 +18,6 @@ class City(models.Model):
 
 
 class Street(models.Model):
-    id = models.IntegerField(primary_key=True)
     city = models.ForeignKey(City, verbose_name='Город')
     street = models.CharField(max_length=50, unique=True, verbose_name='Улица')
 
@@ -59,15 +57,14 @@ class Avtomat(models.Model):
             return 'Новый автомат %s' % self.number
 
     def save(self, *args, **kwargs):
-        if not self.latitude or not self.longitude:
-            if self.street and self.house:
-                api_key = 'AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs'
-                address = u'%s, %s, %s' % (self.street.city, self.street, self.house)
-                gmap = googlemaps.Client(key=api_key)
-                geocode_result = gmap.geocode(address)
-                position = geocode_result[0]['geometry']['location']
-                self.latitude = position['lat']
-                self.longitude = position['lng']
+        if self.street and self.house:
+            api_key = 'AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs'
+            address = u'%s, %s, %s' % (self.street.city, self.street, self.house)
+            gmap = googlemaps.Client(key=api_key)
+            geocode_result = gmap.geocode(address)
+            position = geocode_result[0]['geometry']['location']
+            self.latitude = position['lat']
+            self.longitude = position['lng']
         super(Avtomat, self).save(*args, **kwargs)
 
     class Meta:

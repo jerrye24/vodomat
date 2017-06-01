@@ -12,7 +12,7 @@ from statistic.models import Statistic
 
 
 class StatusView(LoginRequiredMixin, ListView):
-    queryset = Status.objects.all()
+    queryset = Status.objects.all().select_related('avtomat__street')
     template_name = 'status/status.html'
     context_object_name = 'status_table'
 
@@ -48,5 +48,5 @@ def status_detail_view(request, id):
 
 @login_required
 def status_map_view(request):
-    status = Status.objects.all().select_related('avtomat')
+    status = Status.objects.all().select_related('avtomat__street')
     return render(request, 'status/map_google.html', {'status': status})

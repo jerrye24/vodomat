@@ -18,6 +18,7 @@
                 center: kharkov
             });
             {% for avtomat in status %}
+            {% if avtomat.avtomat.latitude and avtomat.avtomat.longitude %}
                     var point = new google.maps.LatLng({{ avtomat.avtomat.latitude|unlocalize }},{{ avtomat.avtomat.longitude|unlocalize }});
                     var marker = new google.maps.Marker({
                         position: point,
@@ -25,6 +26,7 @@
                         label: "{{ avtomat.water_balance }}",
                         map: map
                     });
+            {% endif %}
             {% endfor %}
         }
     </script>
@@ -32,8 +34,6 @@
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs&callback=initMap">
     </script>
-
-    {% for avtomat in status %}{% if avtomat.avtomat.latitude %}{{ avtomat.avtomat.latitude }}  {{ avtomat.avtomat.longitude }}---{% endif %}{% endfor %}
 
 {% endblock %}
 

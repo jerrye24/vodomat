@@ -8,7 +8,7 @@ from .forms import AvtomatForm
 
 
 class AvtomatView(LoginRequiredMixin, ListView):
-    queryset = Avtomat.objects.all().select_related('route')
+    queryset = Avtomat.objects.all().select_related('route').select_related('street__city')
     template_name = 'avtomat/avtomat.html'
     context_object_name = 'avtomat_table'
 
@@ -57,7 +57,7 @@ def street_json_view(request):
 
 
 class StreetView(LoginRequiredMixin, ListView):
-    model = Street
+    queryset = Street.objects.all().select_related('city')
     template_name = 'avtomat/street.html'
     context_object_name = 'street_table'
 
