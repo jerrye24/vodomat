@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Инкассации{% endblock %}
+
+{% block content %}
+
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'collection_day' current_year current_month current_day %}">Сутки</a></li>
+        <li role="presentation" class="active"><a href="{% url 'collection_period_form' %}">Период</a></li>
+    </ul>
+
+    <h3>Инкассации по автомату: {{ avtomat }} с {{ start|date:'j b Y' }} до {{ end|date:'j b Y' }}</h3>
+
+    <table class="table table-striped tablesorter">
+    <thead>
+        <tr class="info">
+            <th>Время</th>
+            <th>Номер</th>
+            <th>Адрес автомата</th>
+            <th>Сумма</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for avtomat in collection_period %}
+            <tr>
+                <td>{{ avtomat.time|date:'j N H:i' }}</td>
+                <td>{{ avtomat.avtomat.number }}</td>
+                <td>{{ avtomat.avtomat }}</td>
+                <td>{{ avtomat.how_money }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

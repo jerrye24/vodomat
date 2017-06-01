@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Маршруты{% endblock %}
+
+{% block content %}
+
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'avtomat' %}">Автоматы</a></li>
+        <li role="presentation" class="active"><a href="{% url 'route' %}">Маршруты</a></li>
+        <li role="presentation"><a href="{% url 'street' %}">Улицы</a></li>
+        <li role="presentation"><a href="{% url 'city' %}">Города</a></li>
+    </ul>
+
+    <h3>Маршруты <a href="{% url 'route_create' %}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Добавить маршрут</a></h3>
+    <table class="table">
+    <thead>
+        <tr class="info">
+            <th>Номер маршрута</th>
+            <th>Номер автомобиля</th>
+            <th>Водитель 1</th>
+            <th>Водитель 2</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for route in route_table %}
+       <tr>
+           <td>{{ route }}</td>
+           <td>{{ route.car_number }}</td>
+           <td>{{ route.driver1 }}</td>
+           <td>{{ route.driver2 }}</td>
+           <td><a href="{% url 'route_edit' route.id %}">Редактировать</a> </td>
+           <td><a data-toggle="modal" data-target="#deleteRoute" data-car_number="{{ route.car_number }}" data-delete_href="{% url 'route_delete' route.id %}" class="text-danger">Удалить</a></td>
+       </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    <div class="modal fade" id="deleteRoute" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title">Удаление маршрута</h4>
+                </div>
+                <div class="modal-body">
+                    <h4></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <a href="" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

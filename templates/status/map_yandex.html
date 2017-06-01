@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load l10n %}
+
+{% block title %}Карта автоматов Yandex{% endblock %}
+{% block meta %}<meta http-equiv="refresh" content="1200">{% endblock %}
+
+{% block content %}
+
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        ymaps.ready(init);
+
+        function init(){
+            var myMap = new ymaps.Map("map", {
+                center: [49.99, 36.23],
+                zoom: 12
+            });
+            {% for avtomat in status %}
+                {% if avtomat.avtomat.latitude and avtomat.avtomat.longitude %}
+                    var myPlacemark = new ymaps.Placemark([{{ avtomat.avtomat.latitude|unlocalize }}, {{ avtomat.avtomat.longitude|unlocalize }}],
+                       {
+                        hintContent: '{{ avtomat.avtomat }}',
+                        balloonContent: 'Остаток воды<br>{{ avtomat.water_balance }}(л)'
+                       },
+                        {
+                         preset:{% if avtomat.water_balance < 100 %}'islands#redCircleIcon'{% else %}'islands#blueCircleIcon'{% endif %}
+                        });
+                    myMap.geoObjects.add(myPlacemark);
+                {% endif %}
+            {% endfor %}
+        }
+    </script>
+
+    <h3>Карта расположения автоматов</h3>
+    <div id="map"></div>
+
+{% endblock %}

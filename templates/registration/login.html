@@ -9,14 +9,14 @@
         <title>Vodomat</title>
         {% bootstrap_css %}
         {% bootstrap_javascript %}
-        <link href="{% static 'registration/css/style.css' %}" rel="stylesheet">
-        <link rel='shortcut icon' href='{% static 'registration/img/favicon.png' %}' type='image/png'>
+        <link href="{% static 'css/style_registration.css' %}" rel="stylesheet">
+        <link rel='shortcut icon' href='{% static 'img/favicon.png' %}' type='image/png'>
     </head>
     <body>
 	<div class="container">
     	    <form class="form-signin" method='post' action='{% url 'login' %}'>{% csrf_token %}
         	<h2 class="form-signin-heading">Vodomat</h2>
-                <input type="text" class="form-control" placeholder="Пользователь" required autofocus name='username'>
+                <input type="text" class="form-control" placeholder="Пользователь" required autofocus name='username' autocomplete="off">
                 <input type="password" class="form-control" placeholder="Пароль" required name='password'>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
 {#                <input type='hidden' name='next' value='{{ next }}'>#}

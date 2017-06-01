@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load l10n %}
+
+{% block title %}Карта автоматов Google{% endblock %}
+{% block meta %}<meta http-equiv="refresh" content="1200">{% endblock %}
+
+{% block content %}
+
+    <h3>Карта расположения автоматов</h3>
+    <div id="map"></div>
+
+    <script type="text/javascript">
+        function initMap() {
+            var kharkov = {lat: 49.99, lng: 36.23};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: kharkov
+            });
+            {% for avtomat in status %}
+                    var point = new google.maps.LatLng({{ avtomat.avtomat.latitude|unlocalize }},{{ avtomat.avtomat.longitude|unlocalize }});
+                    var marker = new google.maps.Marker({
+                        position: point,
+                        title: "{{ avtomat }}",
+                        label: "{{ avtomat.water_balance }}",
+                        map: map
+                    });
+            {% endfor %}
+        }
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs&callback=initMap">
+    </script>
+
+    {% for avtomat in status %}{% if avtomat.avtomat.latitude %}{{ avtomat.avtomat.latitude }}  {{ avtomat.avtomat.longitude }}---{% endif %}{% endfor %}
+
+{% endblock %}
+
+
+
+
+
+AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs

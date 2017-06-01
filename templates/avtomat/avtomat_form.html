@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block title %}Редактировать автомат{% endblock %}
+
+{% block content %}
+
+    <a href="{% url 'avtomat' %}" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span>  Назад</a>
+
+    <div class="row">
+        <div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
+            <h3>Редактировать автомат: {{ avtomat }}</h3>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function disableStreet() {
+        if ($('#id_city').val() == '')
+            $('#id_street_label').prop('disabled', true);
+        else
+            $('#id_street_label').prop('disabled', false);
+    }
+    $(document).ready(disableStreet);
+    $('#id_city').change(disableStreet);
+    $('#id_street').hide();
+    </script>
+
+    <script src="{% static 'js/autocomplete.js' %}"></script>
+
+{% endblock %}

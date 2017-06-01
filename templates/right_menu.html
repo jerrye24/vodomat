@@ -1,0 +1,31 @@
+{% block menu %}
+
+    <li><a href="{% url 'status' %}">
+        <span class='glyphicon glyphicon-home'></span>  Статус автоматов
+	</a>
+    </li>
+    <li><a href="{% url 'collection_day' current_year current_month current_day %}">
+        <span class='glyphicon glyphicon-usd'></span>  Инкассации
+    </a>
+    </li>
+    <li><a href="{% url 'statistic_form' %}">
+        <span class='glyphicon glyphicon-calendar'></span>  Статистика
+	</a>
+    </li>
+{#    <li><a href="{% url 'route' %}">#}
+{#	<span class='glyphicon glyphicon-road'></span>  Маршруты#}
+{#	</a>#}
+{#    </li>#}
+    <li><a href="{% url 'status_map' %}">
+	<span class='glyphicon glyphicon-globe'></span>  Карта автоматов
+	</a>
+    </li>
+    <li><a href="{% url 'avtomat' %}">
+	<span class='glyphicon glyphicon-list-alt'></span>  Справочники
+	</a>
+    </li>
+    {% if user.is_staff %}
+        <li><a href="{% url 'admin:index' %}"><span class='glyphicon glyphicon-dashboard'></span>  Администрирование</a></li>
+    {% endif %}
+
+{% endblock %}

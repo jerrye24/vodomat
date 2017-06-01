@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ avtomat }}{% endblock %}
+
+{% block content %}
+    <h3>{{ avtomat }}</h3>
+    <div class="row">
+
+        <div class="col-md-9">
+            <div class="panel panel-info">
+            <div class="panel-heading">Статус {{ status.time }}</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Вода</th>
+                            <th>Сеть</th>
+                            <th>Куп1</th>
+                            <th>Сч-к</th>
+                            <th>Ре-р</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{% if status.ev_water %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+                            <td>{% if status.ev_volt %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+                            <td>{% if status.ev_bill %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+                            <td>{% if status.ev_counter_water %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+                            <td>{% if status.ev_register %}<span class="text-danger">Сбой</span>{% else %}Норма{% endif %}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-info">
+            <div class="panel-heading">Инкассации {{ date }}</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for collection in collections %}
+                            <tr>
+                                <td>{{ collection.time|date:'H:i' }}</td>
+                                <td>{{ collection.how_money }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-info">
+            <div class="panel-heading">График реализации {{ date }}</div>
+                <embed type="image/svg+xml" src= {{ hist_water|safe }} ></embed>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-info">
+            <div class="panel-heading">{{ avtomat }}</div>
+                <ul class="list-group">
+                    <li class="list-group-item">Остаток(дм&#179): {{ status.water_balance }}</li>
+                    <li class="list-group-item">Сумма(грн): {{ status.how_money }}</li>
+                    <li class="list-group-item">Грн: {{ status.grn }}</li>
+                    <li class="list-group-item">Коп: {{ status.kop }}</li>
+                    <li class="list-group-item">Цена(грн): {{ status.water_price }}</li>
+                    <li class="list-group-item">Купюрник(мин): {{ status.ev_bill_time }}</li>
+                    <li class="list-group-item">Монетник(мин): {{ status.ev_coin_time }}</li>
+                    <li class="list-group-item">Блокировка(ч): {{ status.time_to_block }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <h4>Остаток воды</h4>
+            <div class="progress">
+                <div class="progress-bar {% if balance < 10 %}progress-bar-danger{% endif %}" aria-valuemin="0" aria-valuemax="100" style="width: {{ balance }}%;">{{ balance }}%</div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

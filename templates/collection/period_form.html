@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block title %}Инкассации{% endblock %}
+
+{% block content %}
+
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'collection_day' current_year current_month current_day %}">Сутки</a></li>
+        <li role="presentation" class="active"><a href="{% url 'collection_period_form' %}">Период</a></li>
+    </ul>
+
+    <div class="row">
+        <div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
+            <h3>Выбрать автомат и период</h3>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Показать</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'js/datepicker.js' %}"></script>
+
+{% endblock %}
