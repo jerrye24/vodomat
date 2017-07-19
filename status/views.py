@@ -31,7 +31,7 @@ def status_detail_view(request, id):
     avtomat = Avtomat.objects.get(id=id)
     status = Status.objects.get(avtomat=id)
     collections = Collection.objects.filter(avtomat=id, time__date=date)
-    statistic = Statistic.objects.filter(avtomat=id, time__date=date).values_list('water_balance', flat=True)
+    statistic = Statistic.objects.filter(avtomat=id, time__gte=date).values_list('water_balance', flat=True)
     custom_style_water = Style(colors=('#79aec8',), font_family='Roboto')
     hist_water = pygal.Line(height=300, show_y_guides=False, show_legend=False, margin=0, style=custom_style_water,
                             dots_size=1)
