@@ -11,6 +11,11 @@
         <li role="presentation"><a href="{% url 'street' %}">Улицы</a></li>
         <li role="presentation"><a href="{% url 'city' %}">Города</a></li>
     </ul>
+    <br>
+
+    {% block alphabet %}
+        {% include 'alphabet.html' %}
+    {% endblock %}
 
     <h3>Список автоматов</h3>
     <table class="table tablesorter">
@@ -47,5 +52,9 @@
     {% endfor %}
     </tbody>
     </table>
+
+    {% if request.GET %}
+        <script>alert('Автомат {{ request.GET.number }} не добавлен на карту!\nПроверьте корректность адреса.')</script>
+    {% endif %}
 
 {% endblock %}

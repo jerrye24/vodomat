@@ -7,6 +7,14 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'status' %}">Статус автоматов</a></li>
+        <li role="presentation" class="active"><a href="{% url 'status_map' %}">Карта автоматов</a></li>
+{#        <li role="presentation"><a href="{% url 'street' %}">Улицы</a></li>#}
+{#        <li role="presentation"><a href="{% url 'city' %}">Города</a></li>#}
+    </ul>
+{#    <br>#}
+
     <h3>Карта расположения автоматов</h3>
     <div id="map"></div>
 

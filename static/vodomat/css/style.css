@@ -59,6 +59,12 @@ body {
 .sidebar_list li a {
     color: #79aec8;
 }
+/*Карта*/
+#map {
+    height: 70vh;
+}
+
+
 /*Мобильная версия*/
 #mobile_block {
     border: 1px solid black;
@@ -67,8 +73,4 @@ body {
     padding: 5%;
     font-size: 5vw;
     text-align: center;
-}
-/*Карта*/
-#map {
-    height: 80vh;
 }

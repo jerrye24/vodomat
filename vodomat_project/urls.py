@@ -39,6 +39,7 @@ urlpatterns = [
 
 admin.site.site_header = 'Администрирование Vodomat'
 admin.site.site_title = 'Администрирование Vodomat'
+admin.site.index_title = 'Vodomat'
 admin.site.site_url = '/status/'
 
 if settings.DEBUG:

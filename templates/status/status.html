@@ -5,8 +5,14 @@
 
 {% block content %}
 
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{% url 'status' %}">Статус автоматов</a></li>
+        <li role="presentation"><a href="{% url 'status_map' %}">Карта автоматов</a></li>
+    </ul>
+    <br>
+
     {% block alphabet %}
-        {% include 'status/alphabet.html' %}
+        {% include 'alphabet.html' %}
     {% endblock %}
 
     <h3>Статус автоматов {% now 'DATE_FORMAT' %}</h3>

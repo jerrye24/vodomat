@@ -13,14 +13,31 @@
         <link rel='shortcut icon' href='{% static 'registration/img/favicon.png' %}' type='image/png'>
     </head>
     <body>
-	<div class="container">
-    	    <form class="form-signin" method='post' action='{% url 'login' %}'>{% csrf_token %}
-        	<h2 class="form-signin-heading">Vodomat</h2>
-                <input type="text" class="form-control" placeholder="Пользователь" required autofocus name='username' autocomplete="off">
-                <input type="password" class="form-control" placeholder="Пароль" required name='password'>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-{#                <input type='hidden' name='next' value='{{ next }}'>#}
-	    </form>
-	</div>
+        <div class="modal show">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Vodomat</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form method='post' action='{% url 'login' %}'>
+                            {% csrf_token %}
+                            <input type="text" class="form-control" placeholder="Пользователь" required autofocus name='username' autocomplete="off">
+                            <input type="password" class="form-control" placeholder="Пароль" required name='password'>
+                            <a href="" id="remember_password">Забыли пароль?</a>
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Войти">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+
+<script>
+    $('#remember_password').click(function(){
+       alert('Сожалеем :(\n' +
+           'Пароль нужно помнить!\n' +
+           'Обратитесь к системному администратору')
+    });
+</script>

@@ -52,19 +52,25 @@ class Avtomat(models.Model):
 
     def __unicode__(self):
         if self.street:
-            return '%s %s' % (self.street, self.house)
+            if self.street.city.city == 'Харьков':
+                return '%s %s' % (self.street, self.house)
+            else:
+                return '%s %s(%s)' % (self.street, self.house, self.street.city)
         else:
             return 'Новый автомат %s' % self.number
 
     def save(self, *args, **kwargs):
         if self.street and self.house:
-            api_key = 'AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs'
-            address = u'%s, %s, %s' % (self.street.city, self.street, self.house)
-            gmap = googlemaps.Client(key=api_key)
-            geocode_result = gmap.geocode(address)
-            position = geocode_result[0]['geometry']['location']
-            self.latitude = position['lat']
-            self.longitude = position['lng']
+            try:
+                api_key = 'AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs'
+                address = u'%s, %s, %s' % (self.street.city, self.street, self.house)
+                gmap = googlemaps.Client(key=api_key)
+                geocode_result = gmap.geocode(address)
+                position = geocode_result[0]['geometry']['location']
+                self.latitude = position['lat']
+                self.longitude = position['lng']
+            except IndexError:
+                pass
         super(Avtomat, self).save(*args, **kwargs)
 
     class Meta:

@@ -1,0 +1,24 @@
+{% block alphabet %}
+
+    {% with digits='0123456789' letters='АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ' %}
+
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            {% for i in digits %}
+                {% if 'status' in request.path %}{% url 'status_alphabet' i as the_url %}{% endif %}
+                {% if 'avtomat' in request.path %}{% url 'avtomat_alphabet' i as the_url %}{% endif %}
+                <a href="{{ the_url }}" class="btn btn-default">{{ i }}</a>
+            {% endfor %}
+        </div>
+        <div class="btn-group">
+            {% for j in letters %}
+                {% if 'status' in request.path %}{% url 'status_alphabet' j as the_url %}{% endif %}
+                {% if 'avtomat' in request.path %}{% url 'avtomat_alphabet' j as the_url %}{% endif %}
+                <a href="{{ the_url }}" class="btn btn-default">{{ j }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endwith %}
+
+{% endblock %}

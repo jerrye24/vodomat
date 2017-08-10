@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% load bootstrap3 %}
 
 {% block title %}Маршруты{% endblock %}
@@ -13,7 +14,7 @@
     </ul>
 
     <h3>Маршруты <a href="{% url 'route_create' %}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Добавить маршрут</a></h3>
-    <table class="table">
+    <table class="table tablesorter">
     <thead>
         <tr class="info">
             <th>Номер маршрута</th>
@@ -55,5 +56,7 @@
             </div>
         </div>
     </div>
+
+    <script src="{% static 'vodomat/js/route_delete.js' %}"></script>
 
 {% endblock %}

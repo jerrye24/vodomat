@@ -13,24 +13,26 @@ class AvtomatView(LoginRequiredMixin, ListView):
     context_object_name = 'avtomat_table'
 
 
+class AvtomatAlphabetView(LoginRequiredMixin, ListView):
+    template_name = 'avtomat/avtomat.html'
+    context_object_name = 'avtomat_table'
+
+    def get_queryset(self):
+        return Avtomat.objects.filter(street__street__istartswith=self.args[0])
+
+
 @login_required
 def avtomat_form_view(request, pk):
     avtomat = Avtomat.objects.get(pk=pk)
     if request.method == 'POST':
-        form = AvtomatForm(request.POST, instance=avtomat)
+        form = AvtomatForm(request.POST)
         if form.is_valid():
-            data = form.cleaned_data
-            avtomat.street = data['street']
-            avtomat.house = data['house']
-            avtomat.route = data['route']
-            avtomat.price = data['water_price']
-            avtomat.size = data['size']
-            avtomat.phone = data['phone']
-            avtomat.register = data['register']
-            avtomat.security = data['security']
-            avtomat.competitors = data['competitors']
-            avtomat.save()
-            return redirect('avtomat')
+            form = AvtomatForm(request.POST, instance=avtomat)
+            form.save()
+            if not avtomat.latitude or not avtomat.longitude:
+                return redirect('/avtomat/' + '?number=%s' % avtomat.number)
+            else:
+                return redirect('avtomat')
     else:
         try:
             city = avtomat.street.city
@@ -40,7 +42,7 @@ def avtomat_form_view(request, pk):
             street_label = avtomat.street.street
         except AttributeError:
             street_label = u''
-        form = AvtomatForm(instance=avtomat, initial = {'city': city, 'street_label': street_label})
+        form = AvtomatForm(instance=avtomat, initial={'city': city, 'street_label': street_label})
         return render(request, 'avtomat/avtomat_form.html', {'form': form, 'avtomat': avtomat})
 
 
@@ -51,7 +53,7 @@ def street_json_view(request):
     data = Street.objects.filter(city=city, street__startswith=term)
     streets = []
     for street in data:
-        street = {'value': street.id, 'label': street.street}
+        street = {'id': street.id, 'label': street.street}
         streets.append(street)
     return JsonResponse(streets, safe=False)
 
