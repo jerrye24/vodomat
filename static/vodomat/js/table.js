@@ -1,6 +1,14 @@
 // Сортировка таблицы
 $(".tablesorter").tablesorter();
 
+$('th')
+    .mouseenter(function () {
+        $(this).addClass('text-info')
+    })
+    .mouseleave(function () {
+       $(this).removeClass('text-info')
+    });
+
 // Фиксированные th таблицы
 var tbl = $('.table');
 var title = $('thead');

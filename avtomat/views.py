@@ -8,7 +8,7 @@ from .forms import AvtomatForm
 
 
 class AvtomatView(LoginRequiredMixin, ListView):
-    queryset = Avtomat.objects.all().select_related('route').select_related('street__city')
+    queryset = Avtomat.objects.all().select_related('route', 'street__city')
     template_name = 'avtomat/avtomat.html'
     context_object_name = 'avtomat_table'
 
@@ -18,7 +18,7 @@ class AvtomatAlphabetView(LoginRequiredMixin, ListView):
     context_object_name = 'avtomat_table'
 
     def get_queryset(self):
-        return Avtomat.objects.filter(street__street__istartswith=self.args[0])
+        return Avtomat.objects.filter(street__street__istartswith=self.args[0]).select_related('route', 'street__city')
 
 
 @login_required
@@ -104,3 +104,14 @@ class CityEditView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('city')
+
+
+@login_required
+def avtomat_json_view(request):
+    term = request.GET.get('term').capitalize()
+    data = Avtomat.objects.filter(street__street__startswith=term)
+    avtomats = []
+    for avtomat in data:
+        avtomat = {'label': str(avtomat), 'id': avtomat.id}
+        avtomats.append(avtomat)
+    return JsonResponse(avtomats, safe=False)

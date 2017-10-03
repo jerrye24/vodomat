@@ -1,17 +1,17 @@
 # coding=utf-8
-from avtomat.models import Avtomat
 from django import forms
 
 
-class UIWidget(forms.TextInput):
+class UIWidget(forms.Form):
     class Media:
         css = {'all': ('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css', )}
         js = ('https://code.jquery.com/ui/1.12.1/jquery-ui.js', )
 
 
-class PeriodForm(forms.Form):
-    avtomat = forms.ModelChoiceField(queryset=Avtomat.objects.all(), label=u'Адрес')
-    period = forms.CharField(widget=UIWidget, label=u'Период')
+class CollectionPeriodForm(UIWidget):
+    avtomat_label = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 1}), label=u'Введите адрес автомата')
+    id = forms.IntegerField(widget=forms.HiddenInput)
+    period = forms.CharField(label=u'Период')
 
     def clean_period(self):
         data = self.cleaned_data['period']

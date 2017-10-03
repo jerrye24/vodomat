@@ -18,7 +18,7 @@ def statistic_form_view(request):
                 end = period[1]
             except ImportError:
                 end = start
-            return redirect('statistic', start=start, end=end, id=data['avtomat'].id)
+            return redirect('statistic', start=start, end=end, id=data['id'])
     else:
         form = StatisticForm()
     return render(request, 'statistic/statistic_form.html', {'form': form})
@@ -28,7 +28,7 @@ def statistic_form_view(request):
 def statistic_view(request, start, end, id):
     start = datetime.date(int(start[4:]), int(start[2:4]), int(start[:2]))
     end = datetime.datetime(int(end[4:]), int(end[2:4]), int(end[:2]), 23, 59)
-    statistic_table = Statistic.objects.filter(avtomat=id, time__range=(start, end)).select_related('avtomat')
+    statistic_table = Statistic.objects.filter(avtomat=id, time__range=(start, end))
     avtomat = Avtomat.objects.get(id=id)
     return render(request, 'statistic/statistic.html', {'statistic_table': statistic_table, 'start': start,
                                                         'end': end, 'avtomat': avtomat})

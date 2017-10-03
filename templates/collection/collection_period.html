@@ -10,12 +10,13 @@
         <li role="presentation" class="active"><a href="{% url 'collection_period_form' %}">Период</a></li>
     </ul>
 
-    <h3>Инкассации по автомату: {{ avtomat }} с {{ start|date:'j b Y' }} до {{ end|date:'j b Y' }}</h3>
+    <h3>Инкассации по автомату: <span class="text-info">{{ avtomat }}</span> с {{ start|date:'j b Y' }} до {{ end|date:'j b Y' }}</h3>
 
     <table class="table table-striped tablesorter">
     <thead>
         <tr class="info">
             <th>Время</th>
+            <th>Время в сообщении</th>
             <th>Номер</th>
             <th>Адрес автомата</th>
             <th>Сумма</th>
@@ -25,6 +26,7 @@
         {% for avtomat in collection_period %}
             <tr>
                 <td>{{ avtomat.time|date:'j N H:i' }}</td>
+                <td>{{ avtomat.time_in_message }}</td>
                 <td>{{ avtomat.avtomat.number }}</td>
                 <td>{{ avtomat.avtomat }}</td>
                 <td>{{ avtomat.how_money }}</td>

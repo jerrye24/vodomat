@@ -9,15 +9,58 @@
         <li role="presentation" class="active"><a href="{% url 'collection_day' current_year current_month current_day %}">Сутки</a></li>
         <li role="presentation"><a href="{% url 'collection_period_form' %}">Период</a></li>
     </ul>
+    <br>
 
-    <nav>
-        <ul class="pager">
-            <li class="previous"><a href="{% url 'collection_day' previous_day.year previous_day.month previous_day.day %}"><span>&larr;</span> Предыдущий день</a></li>
-            <li class="next"><a href="{% url 'collection_day' next_day.year next_day.month next_day.day %}">Следующий день <span>&rarr;</span></a></li>
-        </ul>
-    </nav>
+    <div class="btn-toolbar">
 
-    <h3>Инкассации {{ day }}</h3>
+        <div class="btn-group dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Выбрать маршрут <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                {% for i in routes %}
+                    <li><a href="?route={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+                    <li><a href="?">Все</a></li>
+            </ul>
+        </div>
+
+        {% if request.GET.route %}
+
+            <div class="btn-group pull-right">
+                <a class="btn btn-primary" href="{% url 'collection_day' previous_day.year previous_day.month previous_day.day %}?route={{ request.GET.route }}">
+                   <span class="glyphicon glyphicon-chevron-left"></span> Предыдущий день
+                </a>
+                <a class="btn btn-primary" href="{% url 'collection_day' next_day.year next_day.month next_day.day %}?route={{ request.GET.route }}">
+                    Следующий день <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+
+        {% else %}
+
+            <div class="btn-group pull-right">
+                <a class="btn btn-primary" href="{% url 'collection_day' previous_day.year previous_day.month previous_day.day %}">
+                   <span class="glyphicon glyphicon-chevron-left"></span> Предыдущий день
+                </a>
+                <a class="btn btn-primary" href="{% url 'collection_day' next_day.year next_day.month next_day.day %}">
+                    Следующий день <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+
+{#    <nav>#}
+{#        <ul class="pager">#}
+{#            <li class="previous"><a href="{% url 'collection_day' previous_day.year previous_day.month previous_day.day %}"><span>&larr;</span> Предыдущий день</a></li>#}
+{#            <li class="next"><a href="{% url 'collection_day' next_day.year next_day.month next_day.day %}">Следующий день <span>&rarr;</span></a></li>#}
+{#        </ul>#}
+{#    </nav>#}
+
+    <h3>Инкассации {{ day }} {% if request.GET.route %}<span class="text-info">(Маршрут: {{ request.GET.route }})</span>{% endif %}</h3>
 
     <table class="table table-striped tablesorter">
     <thead>
