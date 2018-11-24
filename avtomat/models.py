@@ -19,7 +19,7 @@ class City(models.Model):
 
 class Street(models.Model):
     city = models.ForeignKey(City, verbose_name='Город')
-    street = models.CharField(max_length=50, unique=True, verbose_name='Улица')
+    street = models.CharField(max_length=50, verbose_name='Улица')
 
     def __unicode__(self):
         return self.street
@@ -28,6 +28,7 @@ class Street(models.Model):
         db_table = 'street'
         verbose_name = 'Улица'
         verbose_name_plural = 'Улицы'
+	ordering = ['street', ]
 
 
 class Avtomat(models.Model):
@@ -59,19 +60,19 @@ class Avtomat(models.Model):
         else:
             return 'Новый автомат %s' % self.number
 
-    def save(self, *args, **kwargs):
-        if self.street and self.house:
-            try:
-                api_key = 'AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs'
-                address = u'%s, %s, %s' % (self.street.city, self.street, self.house)
-                gmap = googlemaps.Client(key=api_key)
-                geocode_result = gmap.geocode(address)
-                position = geocode_result[0]['geometry']['location']
-                self.latitude = position['lat']
-                self.longitude = position['lng']
-            except IndexError:
-                pass
-        super(Avtomat, self).save(*args, **kwargs)
+#    def save(self, *args, **kwargs):
+#        if self.street and self.house:
+#            try:
+#                api_key = 'AIzaSyB3wwrPtsRIyV2twvjKvHAwE-Q3aNx5Yjs'
+#                address = u'%s, %s, %s' % (self.street.city, self.street, self.house)
+#                gmap = googlemaps.Client(key=api_key)
+#                geocode_result = gmap.geocode(address)
+#                position = geocode_result[0]['geometry']['location']
+#                self.latitude = position['lat']
+#                self.longitude = position['lng']
+#            except:
+#                pass
+#        super(Avtomat, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['street', '-house']

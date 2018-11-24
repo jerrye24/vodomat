@@ -29,10 +29,10 @@ def avtomat_form_view(request, pk):
         if form.is_valid():
             form = AvtomatForm(request.POST, instance=avtomat)
             form.save()
-            if not avtomat.latitude or not avtomat.longitude:
-                return redirect('/avtomat/' + '?number=%s' % avtomat.number)
-            else:
-                return redirect('avtomat')
+#            if not avtomat.latitude or not avtomat.longitude:
+#                return redirect('/avtomat/' + '?number=%s' % avtomat.number)
+#            else:
+	    return redirect('avtomat')
     else:
         try:
             city = avtomat.street.city
