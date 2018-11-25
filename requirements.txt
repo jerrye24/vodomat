@@ -2,9 +2,10 @@ amqp==2.1.4
 appdirs==1.4.0
 billiard==3.5.0.2
 celery==4.0.2
-Django==1.10.5
-django-bootstrap3==8.1.0
+Django==1.11.6
+django-bootstrap3==9.0.0
 django-debug-toolbar==1.6
+django-redis==4.8.0
 googlemaps==2.4.6
 gunicorn==19.6.0
 kombu==4.0.2
@@ -14,7 +15,7 @@ pygal==2.3.1
 pyparsing==2.1.10
 python-dateutil==2.6.0
 python-memcached==1.58
-pytz==2016.10
+pytz==2017.2
 redis==2.10.5
 requests==2.11.1
 six==1.10.0
