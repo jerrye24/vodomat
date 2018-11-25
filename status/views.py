@@ -40,11 +40,13 @@ class StatusAlphabetView(LoginRequiredMixin, ListView):
 
 @login_required
 def status_detail_view(request, id):
-    date = datetime.date.today()
+    today = datetime.date.today()
+    one_day_ago = today - datetime.timedelta(days=1)
+    two_days_ago = today - datetime.timedelta(days=2)
     avtomat = Avtomat.objects.get(id=id)
     status = Status.objects.get(avtomat=id)
-    collections = Collection.objects.filter(avtomat=id, time__date=date)
-    statistic = Statistic.objects.filter(avtomat=id, time__gte=date).values_list('water_balance', flat=True)
+    collections = Collection.objects.filter(avtomat=id, time__date=today)
+    statistic = Statistic.objects.filter(avtomat=id, time__gte=today).values_list('water_balance', flat=True)
     custom_style_water = Style(colors=('#79aec8',), font_family='Roboto')
     hist_water = pygal.Line(height=300, show_y_guides=False, show_legend=False, margin=0, style=custom_style_water,
                             dots_size=1)
@@ -53,7 +55,9 @@ def status_detail_view(request, id):
         balance = int(status.water_balance / avtomat.size * 100)
     else:
         balance = 0
-    return render(request, 'status/status_detail.html', {'avtomat': avtomat, 'status': status, 'date': date,
+    return render(request, 'status/status_detail.html', {'avtomat': avtomat, 'status': status, 'today': today,
+                                                         'one_day_ago': one_day_ago,
+                                                         'two_days_ago': two_days_ago,
                                                          'collections': collections,
                                                          'hist_water': hist_water.render_data_uri(),
                                                          'balance': balance})

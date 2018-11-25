@@ -4,6 +4,12 @@
 
 {% block content %}
     <h3>{{ avtomat }}</h3>
+    <p>Просмотреть статистику за
+        <a href="{% url 'statistic' today|date:'dmY' today|date:'dmY' avtomat.id %}" target="_blank" type="button" class="btn btn-info">1</a>
+        <a href="{% url 'statistic' one_day_ago|date:'dmY' today|date:'dmY' avtomat.id %}" target="_blank" type="button" class="btn btn-info">2</a>
+        <a href="{% url 'statistic' two_days_ago|date:'dmY' today|date:'dmY' avtomat.id %}" target="_blank" type="button" class="btn btn-info">3</a>
+        дня
+    </p>
     <div class="row">
 
         <div class="col-md-9">
@@ -34,7 +40,7 @@
 
         <div class="col-md-3">
             <div class="panel panel-info">
-            <div class="panel-heading">Инкассации {{ date }}</div>
+            <div class="panel-heading">Инкассации {{ today }}</div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -56,7 +62,7 @@
 
         <div class="col-md-9">
             <div class="panel panel-info">
-            <div class="panel-heading">График реализации {{ date }}</div>
+            <div class="panel-heading">График реализации {{ today }}</div>
                 <embed type="image/svg+xml" src= {{ hist_water|safe }} ></embed>
             </div>
         </div>
