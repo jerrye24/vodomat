@@ -15,7 +15,24 @@
         {% include 'alphabet.html' %}
     {% endblock %}
 
-    <h3>Статус автоматов {% now 'DATE_FORMAT' %}</h3>
+    <br>
+    <div class="btn-toolbar">
+
+        <div class="btn-group dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Выбрать маршрут <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                {% for i in routes %}
+                    <li><a href="?route={{ i }}">{{ i }} ({{ i.driver1 }}/{{ i.driver2 }})</a></li>
+                {% endfor %}
+                    <li><a href="?">Все</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <h3>Статус автоматов {% now 'DATE_FORMAT' %}{% if request.GET.route %}(Маршрут: {{ request.GET.route }}){% endif %}</h3>
     <table class="table tablesorter">
     <thead>
         <tr class="info">

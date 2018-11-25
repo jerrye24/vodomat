@@ -9,7 +9,7 @@ django-redis==4.8.0
 googlemaps==2.4.6
 gunicorn==19.6.0
 kombu==4.0.2
-MySQL-python==1.2.5
+#MySQL-python==1.2.5
 packaging==16.8
 pygal==2.3.1
 pyparsing==2.1.10

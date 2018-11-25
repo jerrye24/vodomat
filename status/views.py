@@ -9,12 +9,25 @@ from .models import Status
 from avtomat.models import Avtomat
 from collection.models import Collection
 from statistic.models import Statistic
+from route.models import Route
 
 
 class StatusView(LoginRequiredMixin, ListView):
     queryset = Status.objects.all().select_related('avtomat__street', 'avtomat__street__city')
     template_name = 'status/status.html'
     context_object_name = 'status_table'
+
+    def get_context_data(self, **kwargs):
+        context = super(StatusView, self).get_context_data(**kwargs)
+        context['routes'] = Route.objects.all()
+        return context
+
+    def get_queryset(self):
+        route = self.request.GET.get('route')
+        if route:
+            return Status.objects.filter(avtomat__route__route_number=route).order_by('avtomat')
+        else:
+            return Status.objects.all().select_related('avtomat__street', 'avtomat__street__city')
 
 
 class StatusAlphabetView(LoginRequiredMixin, ListView):
