@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -13,13 +13,14 @@ from route.models import Route
 
 
 class StatusView(LoginRequiredMixin, ListView):
-    queryset = Status.objects.all().select_related('avtomat__street', 'avtomat__street__city')
+    queryset = Status.objects.all()
     template_name = 'status/status.html'
     context_object_name = 'status_table'
 
     def get_context_data(self, **kwargs):
         context = super(StatusView, self).get_context_data(**kwargs)
         context['routes'] = Route.objects.all()
+        context['status_count'] = Status.objects.count()
         return context
 
     def get_queryset(self):
@@ -28,6 +29,15 @@ class StatusView(LoginRequiredMixin, ListView):
             return Status.objects.filter(avtomat__route__route_number=route).order_by('avtomat')
         else:
             return Status.objects.all().select_related('avtomat__street', 'avtomat__street__city')
+
+
+@login_required
+def status_search_form(request):
+    avtomat_id = request.POST.get('id')
+    if avtomat_id:
+        return redirect('status_detail', id=avtomat_id)
+    else:
+        return redirect('status')
 
 
 class StatusAlphabetView(LoginRequiredMixin, ListView):

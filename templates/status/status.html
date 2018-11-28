@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load extras %}
+{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title %}Статус автоматов{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'>
+{% endblock %}
 
 {% block content %}
 
@@ -16,23 +21,65 @@
     {% endblock %}
 
     <br>
-    <div class="btn-toolbar">
-
-        <div class="btn-group dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Выбрать маршрут <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                {% for i in routes %}
-                    <li><a href="?route={{ i }}">{{ i }} ({{ i.driver1 }}/{{ i.driver2 }})</a></li>
-                {% endfor %}
-                    <li><a href="?">Все</a></li>
-            </ul>
+    <div class="row well well-sm">
+        <div class="col-lg-8">
+            <div class="input-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Выбрать маршрут <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    {% for i in routes %}
+                        <li><a href="?route={{ i }}">{{ i }} ({{ i.driver1 }}/{{ i.driver2 }})</a></li>
+                    {% endfor %}
+                        <li><a href="?">Все</a></li>
+                </ul>
+            </div>
         </div>
 
+        <div class="col-lg-4">
+            <form action="{% url 'status_search_form' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" name="avtomat_label" id="id_avtomat_label" placeholder="Введите адрес автомата" autofocus="1">
+                    <input type="hidden"name="id" id="id_id">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Поиск</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <!--<form action="" method="post">-->
+            <!--{% csrf_token %}-->
+            <!--<div class="col-lg-5">-->
+                <!--<div class="input-group">-->
+                    <!--<label class="checkbox-inline">-->
+                        <!--<input type="checkbox" name="ev_water" value="1">Вода-->
+                    <!--</label>-->
+                    <!--<label class="checkbox-inline">-->
+                        <!--<input type="checkbox" name="ev_volt" value="1">Сеть-->
+                    <!--</label>-->
+                    <!--<label class="checkbox-inline">-->
+                        <!--<input type="checkbox" name="ev_counter" value="1">Счетчик-->
+                    <!--</label>-->
+                    <!--<label class="checkbox-inline">-->
+                        <!--<input type="checkbox" name="ev_register" value="1">Регистратор-->
+                    <!--</label>-->
+                    <!--<label class="checkbox-inline">-->
+                        <!--<input type="checkbox" name="ev_bill" value="1">Купюрник-->
+                    <!--</label>-->
+                    <!--<button class="btn btn-primary" type="submit" style="margin-left: 5px">Сортировать</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
     </div>
 
-    <h3>Статус автоматов {% now 'DATE_FORMAT' %}{% if request.GET.route %}(Маршрут: {{ request.GET.route }}){% endif %}</h3>
+    <h4>Статус автоматов {% now 'DATE_FORMAT' %}
+        {% if request.GET.route %}(Маршрут: {{ request.GET.route }}){% endif %}
+        <span class="label label-info">{{ status_count }}</span>
+    </h4>
+
+    <h3>{% if error %}{{error}}{% endif %}</h3>
+
     <table class="table tablesorter">
     <thead>
         <tr class="info">
@@ -81,5 +128,8 @@
     {% endfor %}
     </tbody>
     </table>
+
+    <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.js'></script>
+    <script src="{% static 'vodomat/js/autocomplete_avtomat.js' %}"></script>
 
 {% endblock %}
