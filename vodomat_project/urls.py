@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^status/', include('status.urls')),
     url(r'^collection/', include('collection.urls')),
     url(r'^statistic/', include('statistic.urls')),
+    url(r'^reports/', include('reports.urls')),
 
 ]
 

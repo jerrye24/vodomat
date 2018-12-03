@@ -13,6 +13,11 @@
 	</a>
     </li>
 
+    <li class={% if 'reports' in request.path %}'active'{% endif %}><a href="{% url 'reports' %}">
+        <span class='glyphicon glyphicon-file'></span>  Отчеты
+	</a>
+    </li>
+
 {#    <li><a href="{% url 'status_map' %}">#}
 {#	<span class='glyphicon glyphicon-globe'></span>  Карта автоматов#}
 {#	</a>#}

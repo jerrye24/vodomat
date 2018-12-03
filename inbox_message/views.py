@@ -13,6 +13,9 @@ def data_from_avtomat(request):
         number = data[:4]
         try:
             price = Avtomat.objects.get(number=number).water_price
-            return HttpResponse('Price={:0>4}'.format(price))
+            if price:
+                return HttpResponse('Price={:0>4}'.format(price))
+            else:
+                return HttpResponse()
         except:
             return HttpResponse()
