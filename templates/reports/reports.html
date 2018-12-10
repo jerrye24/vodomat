@@ -3,5 +3,37 @@
 {% block title %}Отчеты{% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <h4 class="text-primary">Активность купюрников</h4>
+                {% include 'reports/billiards_activity_form.html' %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <h4 class="text-primary">Активность монетников</h4>
+                {% include 'reports/coins_activity_form.html' %}
+            </div>
+        </div>
+        <div class="col-md-3">
+{#            <div class="thumbnail">#}
+{#                <h4>Form 3</h4>#}
+{#                <form action="" method="post">#}
+{#                    <p>form content</p>#}
+{#                    <button type="submit" class="btn btn-primary">Показать</button>#}
+{#                </form>#}
+{#            </div>#}
+        </div>
+        <div class="col-md-3">
+{#            <div class="thumbnail">#}
+{#                <h4>Form 4</h4>#}
+{#                <form action="" method="post">#}
+{#                    <p>form content</p>#}
+{#                    <button type="submit" class="btn btn-primary">Показать</button>#}
+{#                </form>#}
+{#            </div>#}
+        </div>
+    </div>
 
 {% endblock %}

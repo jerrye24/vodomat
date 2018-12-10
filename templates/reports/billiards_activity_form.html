@@ -1,0 +1,34 @@
+{% load bootstrap3 %}
+
+<form action="{% url 'billiards_activity_form' %}" method="post" style="padding: 10px">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="start_period">Дата</label>
+        <div class="input-group">
+            <input type="date" class="form-control" id="start_period" name="date" value="{% now 'Y-m-d' %}">
+            <span class="input-group-addon glyphicon glyphicon-calendar"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="start_period">Начало периода</label>
+        <div class="input-group">
+            <input type="time" class="form-control" id="start_period" name="start_period" value="{% now 'H' %}:00">
+            <span class="input-group-addon glyphicon glyphicon-time"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="end_period">Конец периода</label>
+        <div class="input-group">
+            <input type="time" class="form-control" id="end_period" name="end_period" value="{% now 'H:i' %}">
+            <span class="input-group-addon glyphicon glyphicon-time"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="sum">Принял менее (грн.)</label>
+        <div class="input-group">
+            <input type="number" class="form-control" id="sum" name="amount" value=5>
+            <span class="input-group-addon glyphicon glyphicon-usd"></span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Показать</button>
+</form>

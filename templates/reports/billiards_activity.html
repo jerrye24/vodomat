@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Анализ простоя купюрников{% endblock %}
+
+{% block content %}
+
+    <h4 class="text-primary">Период: {{ start_period }} - {{ end_period }}</h4>
+    <p>Количество: {{ count }}</p>
+    <table class="table table-striped tablesorter">
+    <thead>
+        <tr class="info">
+            <th>Номер автомата</th>
+            <th>Адрес автомата</th>
+            <th>Сумма</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for avtomat in billiards_without_activity %}
+            <tr>
+                <td>{{ avtomat.0.number }}</td>
+                <td>{{ avtomat.0 }}</td>
+                <td>{{ avtomat.1 }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

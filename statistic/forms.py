@@ -12,7 +12,7 @@ class UIWidget(forms.Form):
 class StatisticForm(UIWidget):
     avtomat_label = forms.CharField(widget=forms.TextInput(attrs={'autofocus': 1}), label=u'Ввведите адрес автомата')
     id = forms.IntegerField(widget=forms.HiddenInput)
-    period = forms.CharField(label=u'Период')
+    period = forms.CharField(widget=forms.TextInput(attrs={'autocomplete': 'off'}), label=u'Период')
 
     def clean_period(self):
         data = self.cleaned_data['period']

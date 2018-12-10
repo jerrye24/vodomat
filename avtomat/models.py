@@ -28,7 +28,7 @@ class Street(models.Model):
         db_table = 'street'
         verbose_name = 'Улица'
         verbose_name_plural = 'Улицы'
-	ordering = ['street', ]
+        ordering = ['street', ]
 
 
 class Avtomat(models.Model):
