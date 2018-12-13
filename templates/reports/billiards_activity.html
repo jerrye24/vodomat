@@ -4,6 +4,7 @@
 
 {% block content %}
 
+    <h3 class="text-info">Анализ простоя купюрников</h3>
     <h4 class="text-primary">Период: {{ start_period }} - {{ end_period }}</h4>
     <p>Количество: {{ count }}</p>
     <table class="table table-striped tablesorter">
@@ -16,7 +17,8 @@
     </thead>
     <tbody>
         {% for avtomat in billiards_without_activity %}
-            <tr>
+            <tr onmouseover="this.className='active'" onmouseout="this.className=''"
+                onclick="document.location='{% url 'statistic' date date avtomat.0.id %}'">
                 <td>{{ avtomat.0.number }}</td>
                 <td>{{ avtomat.0 }}</td>
                 <td>{{ avtomat.1 }}</td>

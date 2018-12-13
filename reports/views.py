@@ -57,7 +57,8 @@ def billiards_activity(request):
     return render(request, 'reports/billiards_activity.html', {'billiards_without_activity': billiards_without_activity,
                                                                'start_period': datetime.combine(date, start_period),
                                                                'end_period': datetime.combine(date, end_period),
-                                                               'count': len(billiards_without_activity)})
+                                                               'count': len(billiards_without_activity),
+                                                               'date': date.strftime('%d%m%Y')})
 
 
 @login_required
@@ -103,4 +104,5 @@ def coins_activity(request):
     return render(request, 'reports/coins_activity.html', {'coins_without_activity': coins_without_activity,
                                                            'start_period': datetime.combine(date, start_period),
                                                            'end_period': datetime.combine(date, end_period),
-                                                           'count': len(coins_without_activity)})
+                                                           'count': len(coins_without_activity),
+                                                           'date': date.strftime('%d%m%Y')})
